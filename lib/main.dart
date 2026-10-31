@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
-
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 void main() {
   runApp(const MyApp());
+   WidgetsFlutterBinding.ensureInitialized();
+  // Windows / Linux : SQLite passe par FFI
+  if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+  runApp(const StockFacileApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
